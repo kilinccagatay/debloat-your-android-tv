@@ -4,89 +4,96 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Debloat Your Android TV — Cagatay Kilinc</title>
-  <meta name="description" content="A cautious, reversible workflow for inspecting Android TV over ADB, reducing unnecessary background software and moving to Projectivy Launcher.">
+  <meta name="description" content="A cautious, reversible guide to inspecting and streamlining Android TV with ADB and Projectivy Launcher.">
   <link rel="canonical" href="https://cagataykilinc.com.tr/projects/debloat-your-android-tv/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#guide">Skip to guide</a>
-  <header class="site-header">
-    <a class="brand" href="https://cagataykilinc.com.tr/" aria-label="Cagatay Kilinc home"><span>CK</span> CAGATAY KILINC</a>
-    <nav aria-label="Page navigation">
-      <a href="#setup">Setup</a><a href="#prompt">Prompt</a><a href="#safety">Safety</a><a href="#rollback">Rollback</a>
-    </nav>
+  <a class="skip-link" href="#main">Skip to guide</a>
+  <header class="topbar">
+    <a class="brand" href="https://cagataykilinc.com.tr/"><span>CK</span> Cagatay Kilinc</a>
+    <a href="https://github.com/kilinccagatay/debloat-your-android-tv">GitHub ↗</a>
   </header>
 
-  <main id="guide">
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">ANDROID TV / ADB / PROJECTIVY</p>
-        <h1>Clean up an Android TV without treating it like a disposable device.</h1>
-        <p class="lead">A reversible, measurement-led workflow for understanding what runs on a TV, disabling only carefully reviewed packages and verifying Projectivy before changing the Home experience.</p>
-        <div class="hero-actions"><a class="button primary" href="#setup">Start safely</a><a class="button" href="#prompt">Copy the agent prompt</a></div>
+  <main id="main">
+    <header class="intro">
+      <p class="label">ANDROID TV · ADB · PROJECTIVY</p>
+      <h1>Debloat Your Android TV</h1>
+      <p class="lede">Inspect what is running, disable only carefully reviewed packages and keep every change reversible. No root, no firmware changes and no universal package list.</p>
+    </header>
+
+    <section>
+      <h2>Why I made this</h2>
+      <p>My Philips 43PUS8007/12 had become noticeably slow, so I wanted to find out whether the real limit was storage, background software, the launcher or the hardware itself. I inspected it over ADB, measured the system and tested the changes instead of starting from a generic debloat list.</p>
+      <p>The measurements pointed mainly to its four Cortex-A53 cores and roughly 1.65 GiB of usable memory. Cleaning up selected background packages could reduce unnecessary work, but it could not turn old hardware into a new television. I turned that process into this project so the same investigation can be repeated safely on a different model.</p>
+    </section>
+
+    <section>
+      <h2>Before you start</h2>
+      <ul class="checklist">
+        <li>A Windows, macOS or Linux computer</li>
+        <li>The TV and computer on the same trusted network</li>
+        <li>Developer options and the supported debugging method enabled</li>
+        <li>The TV model, Android version and private connection details</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Setup</h2>
+      <ol class="steps">
+        <li><div><strong>Enable developer options</strong><p>Open the TV's About screen and select Build several times. Menu names vary by brand and firmware.</p></div></li>
+        <li><div><strong>Enable debugging</strong><p>Use Wireless debugging where available. Some televisions use a pairing code and a separate connection port.</p></div></li>
+        <li><div><strong>Keep connection details private</strong><p>Note the TV's local address, but do not post it in issues, screenshots or public logs.</p></div></li>
+        <li><div><strong>Paste the prompt</strong><p>Fill in the three bracketed fields and give the prompt below to a capable coding agent.</p></div></li>
+      </ol>
+      <figure><img src="assets/wireless-debugging.png" alt="Recreated Android TV Wireless debugging screen using a documentation-only address" width="1672" height="941"><figcaption>Privacy-safe recreation. The address shown is reserved for documentation.</figcaption></figure>
+    </section>
+
+    <section id="prompt">
+      <div class="section-title"><h2>Prompt</h2><button type="button" data-copy-prompt>Copy</button></div>
+      <p id="copy-status" class="note" role="status" aria-live="polite">Replace the three bracketed device fields before starting.</p>
+      <pre tabindex="0"><code id="agent-prompt">Loading prompt…</code></pre>
+      <noscript><p>Open <a href="prompt.txt">prompt.txt</a> to copy the complete prompt.</p></noscript>
+    </section>
+
+    <section>
+      <h2>Three rules that matter</h2>
+      <div class="warnings">
+        <article><strong>Do not guess from a package name</strong><p>A harmless-looking service may control HDMI inputs, the remote, sound, DRM or another model-specific feature.</p></article>
+        <article><strong>Test Projectivy before changing Home</strong><p>Install it, open apps and Inputs, and confirm the Home button reaches it before the stock launcher is touched.</p></article>
+        <article><strong>Never remove the recovery path</strong><p>Disable one reviewed package at a time, record its enable command and test after every small batch.</p></article>
       </div>
-      <aside class="guardrail" aria-label="Core safety rule">
-        <span class="status">REVERSIBLE BY DEFAULT</span>
-        <p>Inspect first. Change a small batch. Test the TV. Keep an exact way back.</p>
-        <code>pm disable-user --user 0</code>
-      </aside>
     </section>
 
-    <section class="section intro-grid">
-      <div><p class="section-number">01 / PURPOSE</p><h2>What this guide does</h2></div>
-      <div class="prose"><p>Factory Android TV software varies by brand, model and firmware. A package that is unnecessary on one television may provide inputs, remote buttons, audio, DRM or updates on another. This guide therefore avoids universal debloat lists.</p><p>Instead, it gives an AI coding agent a disciplined procedure: inventory the real device, take baseline measurements, research uncertain components, ask before acting and keep every package change reversible.</p></div>
+    <section>
+      <h2>Why Projectivy</h2>
+      <p>Projectivy offers a clean, customizable Android TV Home screen with categories and supported input shortcuts. On my TV I used the order <strong>Continue Watching → Apps → Inputs</strong>.</p>
+      <p>Install it from <a href="https://play.google.com/store/apps/details?id=com.spocky.projengmenu">Google Play</a> or another trustworthy official route. Its accessibility service is optional and should only be enabled after reading why it is requested. Some customization features require a premium upgrade.</p>
     </section>
 
-    <section class="section" id="setup">
-      <p class="section-number">02 / BEFORE YOU START</p>
-      <h2>Four steps to a controlled session</h2>
-      <div class="steps">
-        <article><span>01</span><h3>Enable developer options</h3><p>On most TVs, open Settings → Device Preferences or System → About, then select Build several times. Menu names vary.</p></article>
-        <article><span>02</span><h3>Enable debugging</h3><p>Use Wireless debugging where available. Android 13 and newer TV devices can support ADB's pairing-code workflow.</p></article>
-        <article><span>03</span><h3>Find the connection details</h3><p>Keep the TV and computer on the same trusted local network. Note the IP and port shown by the TV, but never publish them.</p></article>
-        <article><span>04</span><h3>Give the agent the prompt</h3><p>Fill in the three placeholders, paste the prompt into a capable coding-agent chat and approve each change yourself.</p></article>
-      </div>
-      <figure class="wide-figure"><img src="assets/wireless-debugging.png" alt="Recreated Android TV Wireless debugging screen using a documentation-only IP address and port" width="1672" height="941"><figcaption>A privacy-safe recreation of the Wireless debugging screen. The address shown is reserved for documentation.</figcaption></figure>
+    <section>
+      <h2>Undo a change</h2>
+      <p>If a test fails, stop and re-enable the newest batch first. Use the package list recorded during that TV's own session.</p>
+      <pre class="short-code"><code>adb shell pm enable &lt;package&gt;</code></pre>
     </section>
 
-    <section class="section prompt-section" id="prompt">
-      <div class="section-heading"><div><p class="section-number">03 / AGENT PROMPT</p><h2>Make caution part of the instructions</h2></div><button class="copy-button" type="button" data-copy-prompt>Copy prompt</button></div>
-      <p class="prompt-note" id="copy-status" role="status" aria-live="polite">Replace the three bracketed device fields before starting.</p>
-      <pre class="prompt-box" tabindex="0"><code id="agent-prompt">Loading prompt…</code></pre>
-      <noscript><p>JavaScript is required for the Copy button. The complete text remains available in <a href="prompt.txt">prompt.txt</a>.</p></noscript>
-    </section>
-
-    <section class="section" id="projectivy">
-      <div class="split"><div><p class="section-number">04 / PROJECTIVY</p><h2>Verify the replacement before touching the original</h2></div><div class="prose"><p>Projectivy provides a clean, customizable Android TV Home experience with app categories and shortcuts to supported inputs. Some visual customization features require its premium upgrade; the core workflow in this guide does not assume that every feature is free.</p><p>Install it from Google Play or another trustworthy official distribution route. Open it, launch apps, test Inputs and confirm that the Home button reaches it. Only then should the stock launcher become a candidate for reversible disabling.</p><p>The optional accessibility service can enable custom remote-control actions. Read the permission explanation and decide whether those functions are useful; the cleanup itself should not depend on blindly granting access.</p></div></div>
-      <div class="tested-order"><span>TESTED HOME ORDER</span><strong>Continue Watching</strong><i>→</i><strong>Apps</strong><i>→</i><strong>Inputs</strong></div>
-    </section>
-
-    <section class="section" id="safety">
-      <p class="section-number">05 / SAFETY RULES</p><h2>Rules that stop a cleanup becoming a repair job</h2>
-      <div class="rules">
-        <article><h3>Never classify by name alone</h3><p>Research package identity and behavior. Brand firmware often hides essential functions behind unclear package names.</p></article>
-        <article><h3>Protect the TV's fundamentals</h3><p>Preserve inputs, HDMI, remote control, audio, Wi-Fi, the active keyboard, Play services, Play Store, DRM, System UI and recovery/update components.</p></article>
-        <article><h3>Change no more than ten</h3><p>Use small, approved batches and test Home, Inputs, remote buttons, sound, keyboard, networking and core streaming apps after each batch.</p></article>
-        <article><h3>Do not confuse motion with speed</h3><p>Animation scales at 0.5 can make transitions feel quicker, but they do not upgrade the CPU, memory or storage.</p></article>
-      </div>
-      <div class="warning"><strong>Not part of this guide</strong><p>No root access, bootloader unlocking, firmware flashing, factory reset, indiscriminate cache clearing or deletion of user data.</p></div>
-    </section>
-
-    <section class="section evidence">
-      <div><p class="section-number">06 / REAL DEVICE NOTES</p><h2>What one older Philips TV showed</h2><p class="lead-small">These are observations from one Philips 43PUS8007/12 running Android TV 14—not expected results for other devices.</p></div>
-      <div class="metrics"><div><span>CPU</span><strong>4× Cortex-A53</strong><small>approximately 1.15–1.45 GHz</small></div><div><span>Usable RAM</span><strong>1.65 GiB</strong><small>reported as a low-RAM device</small></div><div><span>LMK events</span><strong>171</strong><small>about 30 minutes after boot in one observation</small></div><div><span>Sequential read</span><strong>141 MB/s</strong><small>93 MB WebView APK test</small></div></div>
-      <p class="prose full">The weak CPU cores and limited memory were the main constraints. Storage capacity and sequential throughput did not appear to be the primary bottleneck, and no clear thermal throttling was observed. Android Studio screen mirroring created substantial software-encoding and compositor load, so it was excluded from meaningful performance measurements.</p>
-      <div class="image-pair"><figure><img src="assets/android-tv-about.png" alt="Recreated Android TV About page showing a Philips model and Android TV OS 14" width="1672" height="941"><figcaption>Device and operating-system context.</figcaption></figure><figure><img src="assets/android-tv-system-info.png" alt="Recreated Android TV technical About page with a fictional demonstration Netflix identifier" width="1672" height="941"><figcaption>Technical information with a fictional service identifier.</figcaption></figure></div>
-    </section>
-
-    <section class="section" id="rollback">
-      <div class="split"><div><p class="section-number">07 / ROLLBACK</p><h2>Keep the way back beside every change</h2></div><div class="prose"><p>For every disabled package, record the package name, reason, test result and the exact enable command. If something breaks, stop changing the TV and restore the newest batch first.</p><pre class="code-sample"><code>adb shell pm enable &lt;package&gt;</code></pre><p>A machine-readable <code>disabled-packages.txt</code> and a human-readable change log turn recovery into a known procedure instead of a memory test.</p></div></div>
-      <figure class="wide-figure"><img src="assets/pairing-code.png" alt="Recreated Android TV wireless pairing screen using a fictional code and documentation-only IP address" width="1672" height="941"><figcaption>The pairing values in this recreation are fictional. Real pairing codes and local addresses should remain private.</figcaption></figure>
+    <section>
+      <details>
+        <summary>Notes and example screens from my Philips TV</summary>
+        <div class="details-body">
+          <p>My reference device was a Philips 43PUS8007/12 running Android TV 14 with four Cortex-A53 cores and about 1.65 GiB of usable memory. CPU and memory pressure were the main constraints in this one-device observation; these results are not a promise for other TVs.</p>
+          <div class="gallery">
+            <figure><img src="assets/android-tv-about.png" alt="Recreated Android TV About page showing a Philips model and Android TV OS 14" width="1672" height="941"><figcaption>Device and operating-system context.</figcaption></figure>
+            <figure><img src="assets/android-tv-system-info.png" alt="Recreated Android TV technical About page with a fictional service identifier" width="1672" height="941"><figcaption>Technical details with a fictional identifier.</figcaption></figure>
+            <figure><img src="assets/pairing-code.png" alt="Recreated Android TV pairing screen using fictional values" width="1672" height="941"><figcaption>Fictional pairing values; real codes stay private.</figcaption></figure>
+          </div>
+        </div>
+      </details>
     </section>
   </main>
 
-  <footer><p>Independent project by <a href="https://cagataykilinc.com.tr/">Cagatay Kilinc</a>.</p><p><a href="https://cagataykilinc.com.tr/projects/debloat-your-android-tv/">Read the live guide</a> · <a href="https://github.com/kilinccagatay/debloat-your-android-tv">View on GitHub</a></p></footer>
+  <footer><a href="https://cagataykilinc.com.tr/">cagataykilinc.com.tr</a><span>·</span><a href="prompt.txt">prompt.txt</a><span>·</span><a href="https://github.com/kilinccagatay/debloat-your-android-tv">GitHub</a></footer>
   <script src="script.js"></script>
 </body>
 </html>

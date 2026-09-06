@@ -1,73 +1,48 @@
 # Debloat Your Android TV
 
-A cautious, reversible workflow for inspecting an Android TV over ADB, reviewing unnecessary factory software, measuring the result and moving to Projectivy Launcher without treating one brand's package list as universal advice.
+A small, safety-first guide for inspecting an Android TV over ADB, disabling carefully reviewed factory packages and moving to Projectivy Launcher without losing the way back.
 
-This is an independent personal project by Cagatay Kilinc. It combines a readable field guide with an English prompt that visitors can give to a capable AI coding agent.
+[Read the guide](https://cagataykilinc.com.tr/projects/debloat-your-android-tv/)
 
-[Read the live project guide](https://cagataykilinc.com.tr/projects/debloat-your-android-tv/)
+## Why I made it
 
-## Safety philosophy
+My Philips 43PUS8007/12 had become noticeably slow. I used ADB to measure its CPU, memory pressure, storage and application launch times before changing anything. The main constraints were its four Cortex-A53 cores and roughly 1.65 GiB of usable memory—not simply storage.
 
-Android TV firmware is device-specific. A package that looks unnecessary may provide HDMI inputs, remote buttons, audio, networking, DRM, updates or another model-critical function. This project therefore does not publish a universal safe-to-disable list.
+This repository turns that investigation into a repeatable process for other devices. It does not publish a universal package list because Android TV services differ by brand, model and firmware.
 
-The workflow is built around five rules:
+## Safety rules
 
-1. inspect and measure before changing anything;
-2. research uncertain packages instead of trusting their names;
-3. ask the TV owner before every change;
-4. use `pm disable-user --user 0` and small batches;
-5. record and test an exact rollback path.
+- No root, bootloader unlocking, firmware flashing or factory reset.
+- No `pm uninstall`, `pm clear`, wildcard or unreviewed bulk commands.
+- Use `pm disable-user --user 0` for one reviewed package at a time.
+- Test the TV after every small batch.
+- Install and verify Projectivy before changing the stock Home launcher.
+- Record an exact `pm enable <package>` command for every change.
 
-It never asks users to root the TV, unlock the bootloader, flash firmware, factory-reset the device or delete user data.
+## Use the prompt
 
-## Use the agent prompt
+Open [`prompt.txt`](prompt.txt), replace the three bracketed device fields and paste it into a capable coding-agent chat. The prompt requires measurement, package research, explicit approval, functional testing and rollback records.
 
-Open [`prompt.txt`](prompt.txt), replace the three bracketed device fields and paste the result into a capable coding-agent chat. The receiving agent is instructed to detect the computer's operating system, use Google's official Android SDK Platform Tools, collect baseline measurements and stop for functional testing after every small batch.
+## Run the page locally
 
-The prompt also requires a machine-readable list of disabled packages and a human-readable change log containing exact rollback commands.
-
-## Projectivy Launcher
-
-Projectivy must be installed, opened and tested before the stock Home launcher is changed or disabled. The guide asks the TV owner to verify app launching, Inputs and Home-button behavior first.
-
-Projectivy is available through [Google Play](https://play.google.com/store/apps/details?id=com.spocky.projengmenu). Some customization features require its premium upgrade; the guide does not assume that every feature is free.
-
-## Run locally
-
-The project is a dependency-free static site. Clone the repository and serve its root with any local HTTP server. For example, with Python 3:
+The site has no dependencies or build step:
 
 ```sh
 python -m http.server 8080
 ```
 
-Then open `http://localhost:8080`.
+Open `http://localhost:8080`. Serving it over HTTP allows the page to load `prompt.txt` for the Copy button.
 
-Serving the files over HTTP is required for the page to load `prompt.txt`. Opening `index.html` directly through a `file://` URL may cause the browser to block that request.
+## Files
 
-## Repository contents
+- `index.html` — the one-page guide
+- `styles.css` — responsive styling
+- `script.js` — prompt loading and copy feedback
+- `prompt.txt` — reusable agent instructions
+- `assets/` — privacy-safe recreated Android TV screens
 
-- `index.html` — the complete field-guide page;
-- `styles.css` — responsive presentation and accessible focus states;
-- `script.js` — prompt loading and keyboard/touch-friendly copy feedback;
-- `prompt.txt` — the reusable agent instructions;
-- `assets/` — privacy-safe recreated Android TV documentation visuals.
-
-The visuals use fictional documentation values. They are recreations based on the project device's screens, not unedited device captures. No real IP address, pairing code, account, device serial or Netflix ESN is included.
-
-## Limitations
-
-Performance gains depend on the TV, firmware, CPU, memory pressure, installed software and background services. A before/after result from one television does not establish what another device will do. Activity launch measurements also describe the first Activity, not the time until all content has loaded.
-
-## Rollback
-
-The reversible counterpart to a disabled package is:
-
-```sh
-adb shell pm enable <package>
-```
-
-If a test fails, stop making changes and restore the most recently disabled batch first. Do not improvise package names; use the list recorded during that device's own session.
+The visuals contain fictional documentation values, not the real IP address, pairing code, device serial or Netflix ESN from my television.
 
 ## License
 
-The project source and original written material are available under the [MIT License](LICENSE). Product names and third-party interfaces remain the property of their respective owners.
+MIT. Product names and third-party interfaces remain the property of their respective owners.
