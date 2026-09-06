@@ -4,6 +4,8 @@ A cautious, reversible workflow for inspecting an Android TV over ADB, reviewing
 
 This is an independent personal project by Cagatay Kilinc. It combines a readable field guide with an English prompt that visitors can give to a capable AI coding agent.
 
+[Read the live project guide](https://cagataykilinc.com.tr/projects/debloat-your-android-tv/)
+
 ## Safety philosophy
 
 Android TV firmware is device-specific. A package that looks unnecessary may provide HDMI inputs, remote buttons, audio, networking, DRM, updates or another model-critical function. This project therefore does not publish a universal safe-to-disable list.
