@@ -13,7 +13,14 @@ Do not run benchmarks, collect CPU/RAM/storage measurements, time app launches o
 Check my computer's operating system and use Google's official Android SDK Platform Tools. Help me connect over ADB using the address and port shown on my TV. If pairing is required, guide me through "Pair device with pairing code"; its port may differ from the connection port. Wait for me to approve any TV authorization dialog. Keep connection details and pairing codes out of public files.
 
 2. Review unused apps
-List installed and already-disabled packages, then ask which apps and features I use. Propose a short list of unnecessary factory apps to disable. Check unfamiliar packages against reliable information for my TV model; do not decide from a package name alone. Leave uncertain packages enabled.
+List installed and already-disabled packages. Sort them into three groups and show me a table with the group, exact package name, plain-language purpose, reason and proposed action:
+(1) Recommended cleanup: confirmed nonessential apps I do not use, such as unused streaming apps or demos.
+(2) Depends on me: ask whether I use the app or feature before deciding.
+(3) Keep enabled: essential system components and any package whose purpose or dependencies remain uncertain.
+
+Review screensavers, voice assistants, setup wizards and telemetry individually; these labels do not automatically make a package safe to disable. Check unfamiliar packages against reliable information for my TV model rather than deciding from the name alone.
+
+Get my approval for the specific packages in group 1 and start there. Resolve the questions in group 2 before proposing further changes. Do not disable packages in group 3.
 
 Preserve Home until its replacement works, Inputs/HDMI, remote controls, sound, keyboard, network services, Play Store and Play Services, DRM/streaming, Settings, System UI, updates and recovery.
 
