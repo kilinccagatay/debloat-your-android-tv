@@ -21,7 +21,7 @@ This repository turns that investigation into a repeatable process for other dev
 
 ## Use the prompt
 
-Open [`prompt.txt`](prompt.txt), replace the three bracketed device fields and paste it into a capable coding-agent chat. The prompt requires measurement, package research, explicit approval, functional testing and rollback records.
+Open [`prompt.txt`](prompt.txt), replace the three bracketed device fields and paste it into a capable coding-agent chat. Include the connection port shown on your TV when available; the pairing port can be different. The prompt helps with ADB connection, reviewing unused apps, reversible cleanup and Projectivy setup. It does not request benchmarks or performance measurements. Package review, functional checks and undo commands remain part of the process.
 
 ## Run the page locally
 
