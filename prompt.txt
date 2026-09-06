@@ -1,48 +1,64 @@
-Help me clean up my Android TV and set up Projectivy Launcher. I want fewer unnecessary background apps and a simpler, more responsive Home screen. Run the commands where possible and explain each step in plain language.
+Help me tidy up my Android TV over ADB and set up Projectivy Launcher. My goal is a simpler Home screen with fewer promotional rows and fewer unused apps running in the background. Carry out the steps you can, explaining them in everyday language.
 
-My TV:
+MY DEVICE
 - Brand and model: [TV BRAND AND MODEL]
-- Android TV / Google TV version, if known: [ANDROID VERSION OR UNKNOWN]
-- TV IP address and connection port, if shown: [IP ADDRESS:PORT]
+- Android TV / Google TV version: [ANDROID VERSION OR UNKNOWN]
+- IP address and connection port, if shown: [IP ADDRESS:PORT]
 
-My computer and TV are on the same trusted network, and developer options and debugging are enabled.
+Developer options and debugging are enabled. The TV and computer are on the same trusted network.
 
-Do not run benchmarks, collect CPU/RAM/storage measurements, time app launches or produce before/after performance tables. Only inspect the device and package information needed for this setup.
+BOUNDARIES
+Keep this reversible: disable reviewed apps, never uninstall them or clear their data. Do not root, unlock the bootloader, flash firmware or factory-reset the TV. Leave packages enabled when their purpose or dependencies are unclear.
 
-1. Connect
-Check my computer's operating system and use Google's official Android SDK Platform Tools. Help me connect over ADB using the address and port shown on my TV. If pairing is required, guide me through "Pair device with pairing code"; its port may differ from the connection port. Wait for me to approve any TV authorization dialog. Keep connection details and pairing codes out of public files.
+Protect Inputs/HDMI, antenna services, remote controls, sound, keyboard, network connectivity, Google Play Services and Store, DRM/streaming, Settings, System UI, updates and recovery. Keep the stock Home launcher working until Projectivy is verified. Identify the relevant services for this particular model instead of copying another brand's package list.
 
-2. Review unused apps
-List installed and already-disabled packages. Sort them into three groups and show me a table with the group, exact package name, plain-language purpose, reason and proposed action:
-(1) Recommended cleanup: confirmed nonessential apps I do not use, such as unused streaming apps or demos.
-(2) Depends on me: ask whether I use the app or feature before deciding.
-(3) Keep enabled: essential system components and any package whose purpose or dependencies remain uncertain.
+WORK THROUGH THESE STEPS
 
-Review screensavers, voice assistants, setup wizards and telemetry individually; these labels do not automatically make a package safe to disable. Check unfamiliar packages against reliable information for my TV model rather than deciding from the name alone.
+1. Connect to the TV
+Detect my computer's operating system and check for Google's official Android SDK Platform Tools. Install them if needed. Use the connection address displayed by my TV; do not assume port 5555. If pairing is required, guide me through "Pair device with pairing code" and use its separate pairing port with adb pair before adb connect. Wait for me to approve the TV's authorization prompt.
 
-Get my approval for the specific packages in group 1 and start there. Resolve the questions in group 2 before proposing further changes. Do not disable packages in group 3.
+2. Save a short starting snapshot
+Create a local tv-cleanup folder. Save the output of:
+adb shell dumpsys meminfo
+adb shell pm list packages -s --user 0
+adb shell pm list packages -d --user 0
 
-Preserve Home until its replacement works, Inputs/HDMI, remote controls, sound, keyboard, network services, Play Store and Play Services, DRM/streaming, Settings, System UI, updates and recovery.
+Keep the original files as the before snapshot. List other installed apps only if needed for review. Skip unsupported commands and note that limitation. Do not run benchmarks, storage tests or app-launch timing experiments.
 
-3. Clean up in small steps
-Get my approval for the specific packages first. Disable only reviewed packages with:
+3. Show me what can change
+Present a table with the exact package name, its purpose, group and reason:
+- Cleanup candidates: verified nonessential apps I do not use, such as unused streaming apps or demos.
+- My choice: apps or features whose removal from use depends on my preferences; ask me about these.
+- Keep enabled: essential services and anything uncertain.
+
+Check unfamiliar packages using reliable information for my model. Screensavers, voice assistants, setup services and telemetry need individual review, not an automatic "junk" label. Get my approval for specific cleanup candidates and start with those. Resolve the second group's questions before proposing further changes.
+
+4. Disable approved apps
+Use one reviewed package per command:
 adb shell pm disable-user --user 0 <package>
 
-Do not uninstall apps, clear their data, root, unlock, flash or factory-reset the TV. Do not run bulk commands against an unreviewed list or clear caches as a performance fix.
+Work in batches of at most five. After each batch, stop while I test Home, Inputs/HDMI, remote buttons, sound, keyboard and my usual streaming apps. Continue only after I confirm they work.
 
-Work in small batches of at most five packages. After each batch, have me test Home, Inputs/HDMI, the remote, sound and the apps I use before continuing. Keep a local CHANGELOG.md with each change and its undo command:
+Keep disabled-packages.txt for packages successfully disabled during this session, and CHANGELOG.md for the reason, original state, result and undo command. Do not include packages that were already disabled. For a package that was previously enabled, use:
 adb shell pm enable --user 0 <package>
 
-Record only packages you actually changed, so rollback does not enable apps that were already disabled. If something stops working, restore the last batch first.
+If something breaks, restore the latest batch first and test again.
 
-4. Set up Projectivy Launcher
-Help me install Projectivy from Google Play or its official distribution source. Have me open it and organize Apps, Continue Watching and supported Inputs shortcuts to my preference. Explain any optional accessibility permission before I decide to enable it.
+5. Install and configure Projectivy
+Help me install Projectivy Launcher from Google Play or its official distribution source. Open it and arrange Apps, Continue Watching and supported Inputs shortcuts to my preference. Explain any optional accessibility permission before I choose to grant it.
 
-Use the supported method for making Projectivy the Home screen on this TV. Verify navigation, apps and the Home button before considering disabling the stock launcher. If that change is needed, ask first, record the original Home component and exact recovery command, and keep ADB connected while testing.
+Use the supported Home-screen selection method for my TV. Test Projectivy, app launching and the Home button before proposing any change to the stock launcher. If disabling that launcher is necessary, get my approval, record its original Home component and recovery commands, and keep ADB connected while testing.
 
-5. Finish
-Offer optional 0.5 animation scales for snappier transitions; explain that this does not increase hardware speed. If I agree, save the original values and their restore commands.
+6. Adjust and verify
+Offer animation scales of 0.5 for shorter transitions. If I agree, first save the original values of window_animation_scale, transition_animation_scale and animator_duration_scale, including whether each was unset, and record how to restore them. This changes how transitions feel, not the TV's hardware speed. Do not clear app data or caches as a routine speed-up step.
 
-When I am ready, reboot and have me check that Projectivy, Home, Inputs, sound and my usual apps still work. Summarize what changed and how to undo it. No benchmarks or performance claims are needed.
+When I am ready, reboot and check Home, Projectivy, Inputs, sound and my regular apps. Repeat the three snapshot commands under similar idle conditions and save separate after files.
 
-Start by checking the ADB setup and confirming my TV's connection details.
+FINISH WITH
+- A short before/after table of available memory figures and package changes. Memory snapshots fluctuate; do not present them as proof of a speed increase.
+- The packages changed, with a plain-language explanation.
+- A local rollback script for this computer and its exact run command. Restore only this session's recorded changes, including animation and Home settings where changed. Do not run it unless I ask.
+
+Keep logs and connection details local. Exclude pairing codes, addresses and device identifiers from public files.
+
+Begin by checking ADB and confirming the device connection.

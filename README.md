@@ -17,11 +17,11 @@ This repository turns that investigation into a repeatable process for other dev
 - Use `pm disable-user --user 0` for one reviewed package at a time.
 - Test the TV after every small batch.
 - Install and verify Projectivy before changing the stock Home launcher.
-- Record an exact `pm enable <package>` command for every change.
+- Record the original state and an exact undo command for every change.
 
 ## Use the prompt
 
-Open [`prompt.txt`](prompt.txt), replace the three bracketed device fields and paste it into a capable coding-agent chat. Include the connection port shown on your TV when available; the pairing port can be different. The prompt helps with ADB connection, reviewing unused apps, reversible cleanup and Projectivy setup. It does not request benchmarks or performance measurements. Package review, functional checks and undo commands remain part of the process.
+Open [`prompt.txt`](prompt.txt), replace the three bracketed device fields and paste it into a capable coding-agent chat. Include the connection port shown on your TV when available; the pairing port can be different. The agent saves brief memory and package snapshots, groups packages into cleanup candidates, personal choices and protected components, then helps with approved cleanup and Projectivy setup. It skips benchmarks and lengthy performance tests. At the end, it summarizes the snapshots and changes and provides a local rollback script for the recorded actions.
 
 ## Run the page locally
 
