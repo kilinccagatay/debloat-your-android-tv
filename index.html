@@ -34,7 +34,7 @@
       <ul class="checklist">
         <li>A Windows, macOS or Linux computer</li>
         <li>The TV and computer on the same trusted network</li>
-        <li>Developer options and the supported debugging method enabled</li>
+        <li>The TV remote and access to its Settings menu</li>
         <li>The TV model, Android version and private connection details</li>
       </ul>
     </section>
@@ -42,10 +42,10 @@
     <section>
       <h2>Setup</h2>
       <ol class="steps">
-        <li><div><strong>Enable developer options</strong><p>Open the TV's About screen and select Build several times. Menu names vary by brand and firmware.</p></div></li>
-        <li><div><strong>Enable debugging</strong><p>Use Wireless debugging where available. Some televisions use a pairing code and a separate connection port.</p></div></li>
-        <li><div><strong>Find the TV's address</strong><p>Open Wireless debugging and note the IP address and port shown. You will use them when ADB connects to the TV.</p></div></li>
-        <li><div><strong>Paste the prompt</strong><p>Fill in the three bracketed fields and give the prompt below to a capable coding agent.</p></div></li>
+        <li><div><strong>Enable developer options</strong><p>On the TV, go to Settings → System → About. Highlight Build, then press the remote's OK button seven times until the TV confirms that developer options are enabled. Menu names can vary slightly by brand and firmware.</p></div></li>
+        <li><div><strong>Enable debugging</strong><p>Go to Settings → System → Developer options → USB debugging and turn it on. If there is a separate Wireless debugging toggle, turn that on too.</p></div></li>
+        <li><div><strong>Open the pairing screen</strong><p>Under Wireless debugging, choose Pair device with pairing code. Keep that screen open and note the pairing address, port and six-digit code; the connection address shown on the main Wireless debugging screen may use a different port.</p></div></li>
+        <li><div><strong>Give the prompt to your agent</strong><p>Replace the three bracketed device fields in the prompt below, then paste it into a capable coding agent. Enter the temporary pairing code only when the local ADB command asks for it—do not add it to the saved prompt.</p></div></li>
       </ol>
       <figure><img src="assets/wireless-debugging.png" alt="Recreated Android TV Wireless debugging screen using a documentation-only address" width="1672" height="941"><figcaption>Privacy-safe recreation. The address shown is reserved for documentation.</figcaption></figure>
     </section>
