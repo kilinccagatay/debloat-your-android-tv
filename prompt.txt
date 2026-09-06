@@ -7,7 +7,7 @@ My device details:
 
 Safety rules you must follow:
 1. Explain every proposed action in plain language before running it.
-2. Do not root the TV, unlock its bootloader, flash firmware, factory-reset it, delete user data, or recommend doing so.
+2. Do not root the TV, unlock its bootloader, flash firmware, factory-reset it, delete user data, or recommend doing so. These operations can erase the device and may affect Widevine/DRM certification and streaming quality.
 3. Detect whether the computer is running Windows, macOS, or Linux. Install or use Google's official Android SDK Platform Tools in an appropriate way. Do not download ADB from an unofficial mirror.
 4. Connect using the debugging method supported by this TV. If wireless pairing is required, guide me through the pairing-code flow and wait while I approve the TV's authorization dialog.
 5. Never expose or commit my IP address, ADB pairing code, device serial, account details, ADB keys, logs, or other private identifiers.
@@ -24,20 +24,20 @@ Safety rules you must follow:
    - untouchable or model-critical components.
 9. Research unfamiliar packages using current, reliable sources. Never classify a package from its name alone. Package names mentioned in examples are illustrative and brand-specific; no Philips, TCL, Sony, Xiaomi, Google, or other manufacturer service list is universally safe.
 10. Preserve input/source services, HDMI handling, remote-control services, audio, Wi-Fi, Bluetooth if used, Google Play Services, Play Store, the active input method, DRM and streaming components, settings, System UI, update/recovery components, and any model-specific service whose purpose is uncertain.
-11. Ask for my approval before disabling anything. Use reversible commands in this form:
+11. Ask for my approval before disabling anything. Show the exact package, the evidence for its classification and the rollback command immediately before the action. Use reversible commands in this form:
     adb shell pm disable-user --user 0 <package>
-    Do not use uninstall commands for system-package cleanup.
+    Never use `pm uninstall`, `pm uninstall --user 0`, `pm clear`, wildcards, generated bulk-disable loops or commands that operate on an unreviewed package list. Run one explicitly reviewed package per command.
 12. Work in batches of no more than 10 packages. After every batch, stop and ask me to test Home, Inputs/HDMI, remote buttons, sound, keyboard, Wi-Fi, Play Store, DRM streaming, YouTube, Netflix or equivalent core apps, and any brand-specific feature I rely on.
 13. Maintain two files throughout the work:
     - disabled-packages.txt: one disabled package name per line;
     - CHANGELOG.md: each action, the reason, test result, and exact rollback command.
 14. The rollback command for each disabled package must be recorded as:
     adb shell pm enable <package>
-15. If a problem appears, stop changing packages and re-enable the most recent batch first. Provide a complete rollback sequence that reads from the recorded list rather than assuming package names.
-16. Do not clear application caches indiscriminately and do not claim that cache clearing permanently improves performance.
-17. You may offer to set Android animation scales to 0.5, but only after explaining that this changes perceived responsiveness rather than hardware performance and after receiving my explicit consent.
+15. If a problem appears, stop changing packages and re-enable the most recent batch first. Provide a complete rollback sequence that reads from the recorded list rather than assuming package names. If ADB disconnects or Home becomes unavailable, do not improvise additional destructive actions or suggest a factory reset as the first response.
+16. Do not run `pm trim-caches`, `settings reset`, device-policy commands, or commands that reboot into the bootloader or recovery. Do not claim that cache clearing permanently improves performance.
+17. You may offer to set Android animation scales to 0.5, but only after explaining that this changes perceived responsiveness rather than hardware performance and after receiving my explicit consent. Record the current values first and include commands that restore those exact values.
 18. Install Projectivy Launcher through Google Play or another trustworthy official distribution route. Have me open it, test navigation, launch apps, open Inputs, and confirm that the Home button can reach it before changing the stock launcher.
-19. Do not disable the stock Home launcher until Projectivy has been verified as a working Home target. Before any launcher change, record the current Home component and its exact recovery command.
+19. Do not disable the stock Home launcher until Projectivy has been verified as a working Home target. Before any launcher change, record the current Home component, the stock launcher package and its exact `pm enable` recovery command. Keep the authorized ADB session available, verify the resolved Home activity where the firmware supports it, and test Home immediately after the change and again after a reboot before continuing.
 20. Projectivy's optional accessibility service may be used for remote-control shortcuts and launcher behavior. Explain why a permission is requested and let me decide; do not describe a permission prompt as an advertisement.
 21. After the approved changes, reboot the TV, repeat measurements under comparable conditions, and summarize before/after results without exaggerating causality. Distinguish measured results, observations, and assumptions.
 
